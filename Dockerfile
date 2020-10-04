@@ -56,6 +56,8 @@ RUN set -x && \
     rm -rf .git && \
     cd ..; } || : && \
   ./autogen.sh && \
+  wget https://github.com/rpki-client/rpki-client-portable/commit/26c473de8796caaca2a1f5b203e1c853dee81daf.patch -O - | tee /dev/stderr | patch -p1 && \
+  ./autogen.sh && \
   ./configure \
     --prefix=/usr \
     --with-user=rpki-client \
