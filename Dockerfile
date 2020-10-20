@@ -32,7 +32,7 @@ LABEL maintainer="Robert Scheck <https://github.com/rpki-client/rpki-client-cont
       org.label-schema.vcs-url="https://github.com/rpki-client"
 
 ARG VERSION
-ENV VERSION ${VERSION:-6.7p1}
+ENV VERSION ${VERSION:-6.8p0}
 ARG PORTABLE_GIT
 ENV PORTABLE_GIT ${PORTABLE_GIT:-https://github.com/rpki-client/rpki-client-portable.git}
 ARG PORTABLE_COMMIT
