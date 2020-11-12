@@ -43,7 +43,7 @@ While none of the volumes is required, meaningful usage requires at least persis
 
 For custom OCI images, the following build arguments can be passed:
 
-  * `VERSION` - Git tag or branch of the portability shim, e.g. `master`, `OPENBSD_6_8` or `6.8p0`, defaults to `6.8p0`.
+  * `VERSION` - Git tag or branch of the portability shim, e.g. `master`, `OPENBSD_6_8` or `6.8p1`, defaults to `6.8p1`.
   * `PORTABLE_GIT` - Git repository URL of the portability shim, defaults to `https://github.com/rpki-client/rpki-client-portable.git`.
   * `PORTABLE_COMMIT` - Git commit, branch or tag of the portability shim, defaults to `$VERSION`.
   * `OPENBSD_GIT` - Git repository URL of the OpenBSD source code, defaults to `https://github.com/rpki-client/rpki-client-openbsd.git`.

@@ -32,7 +32,7 @@ LABEL maintainer="Robert Scheck <https://github.com/rpki-client/rpki-client-cont
       org.label-schema.vcs-url="https://github.com/rpki-client"
 
 ARG VERSION
-ENV VERSION ${VERSION:-6.8p0}
+ENV VERSION ${VERSION:-6.8p1}
 ARG PORTABLE_GIT
 ENV PORTABLE_GIT ${PORTABLE_GIT:-https://github.com/rpki-client/rpki-client-portable.git}
 ARG PORTABLE_COMMIT
@@ -75,7 +75,7 @@ RUN set -x && \
     -D \
     -u 100 \
     rpki-client && \
-  make install INSTALL='install -p' && \
+  make install-strip INSTALL='install -p' && \
   cd .. && \
   rm -rf rpki-client-portable && \
   apk del --no-cache ${BUILDREQ}
