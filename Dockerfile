@@ -44,7 +44,7 @@ ENV OPENBSD_COMMIT ${OPENBSD_COMMIT}
 ENV BUILDREQ="git autoconf automake libtool build-base fts-dev openssl-dev"
 
 RUN set -x && \
-  apk add --no-cache ${BUILDREQ} rsync tzdata tini && \
+  apk add --no-cache ${BUILDREQ} fts rsync tzdata tini && \
   cd /tmp && \
   git clone ${PORTABLE_GIT} && \
   cd rpki-client-portable && \
