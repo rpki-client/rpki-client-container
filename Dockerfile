@@ -56,6 +56,7 @@ RUN set -x && \
     rm -rf .git && \
     cd ..; } || : && \
   ./autogen.sh && \
+  wget https://github.com/rpki-client/rpki-client-openbsd/commit/d1cf0592964edc0800539ce030ac4a5d496bb24c.patch -O - | tee /dev/stderr | patch -p4 -d src && \
   ./configure \
     --prefix=/usr \
     --with-user=rpki-client \
