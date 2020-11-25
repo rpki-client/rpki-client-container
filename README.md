@@ -23,7 +23,7 @@ podman run --name rpki-client \
            --volume /path/to/rpki-client/tals/arin.tal:/etc/tals/arin.tal \
            --volume /path/to/rpki-client/output:/var/lib/rpki-client \
            --volume /path/to/rpki-client/cache:/var/cache/rpki-client \
-           --detach rpki/rpki-client:latest
+           --detach quay.io/rpki/rpki-client:latest
 ```
 
 ## Volumes
