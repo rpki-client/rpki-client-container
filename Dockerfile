@@ -41,10 +41,12 @@ ARG OPENBSD_GIT
 ENV OPENBSD_GIT ${OPENBSD_GIT:-https://github.com/rpki-client/rpki-client-openbsd.git}
 ARG OPENBSD_COMMIT
 ENV OPENBSD_COMMIT ${OPENBSD_COMMIT}
-ENV BUILDREQ="git autoconf automake libtool build-base fts-dev openssl-dev"
+ENV BUILDREQ="git autoconf automake libtool build-base fts-dev openssl-dev libtls-standalone-dev"
 
 RUN set -x && \
   apk add --no-cache ${BUILDREQ} fts rsync tzdata tini && \
+  export CFLAGS="$(pkg-config --cflags libtls-standalone)" && \
+  export CPPFLAGS="$(pkg-config --cflags libtls-standalone)" && \
   cd /tmp && \
   git clone ${PORTABLE_GIT} && \
   cd rpki-client-portable && \
