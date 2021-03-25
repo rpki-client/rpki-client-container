@@ -45,8 +45,6 @@ ENV BUILDREQ="git autoconf automake libtool build-base fts-dev openssl-dev libtl
 
 RUN set -x && \
   apk add --no-cache ${BUILDREQ} fts rsync tzdata tini && \
-  export CFLAGS="$(pkg-config --cflags libtls-standalone)" && \
-  export CPPFLAGS="$(pkg-config --cflags libtls-standalone)" && \
   cd /tmp && \
   git clone ${PORTABLE_GIT} && \
   cd rpki-client-portable && \
@@ -60,6 +58,7 @@ RUN set -x && \
   ./autogen.sh && \
   ./configure \
     --prefix=/usr \
+    --with-libtls=libtls-standalone \
     --with-user=rpki-client \
     --with-tal-dir=/etc/tals \
     --with-base-dir=/var/cache/rpki-client \
