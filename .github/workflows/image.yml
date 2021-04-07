@@ -69,7 +69,7 @@ jobs:
         with:
           context: .
           file: ./Dockerfile
-          platforms: linux/amd64
+          platforms: linux/amd64,linux/arm64/v8,linux/ppc64le,linux/s390x
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.prep.outputs.tags }}
           build-args: ${{ steps.prep.outputs.args }}
