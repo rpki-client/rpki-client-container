@@ -58,7 +58,6 @@ RUN set -x && \
   ./autogen.sh && \
   ./configure \
     --prefix=/usr \
-    --with-libtls=libtls-standalone \
     --with-user=rpki-client \
     --with-tal-dir=/etc/tals \
     --with-base-dir=/var/cache/rpki-client \
