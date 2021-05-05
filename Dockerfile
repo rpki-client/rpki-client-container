@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2020 Robert Scheck <robert@fedoraproject.org>
+# Copyright (c) 2020-2021 Robert Scheck <robert@fedoraproject.org>
 #
 # Permission to use, copy, modify, and distribute this software for any
 # purpose with or without fee is hereby granted, provided that the above
@@ -44,6 +44,7 @@ ENV OPENBSD_COMMIT ${OPENBSD_COMMIT}
 ENV BUILDREQ="git autoconf automake expat-dev libtool build-base fts-dev libressl-dev"
 
 RUN set -x && \
+  echo "https://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories && \
   apk add --no-cache ${BUILDREQ} expat fts libressl rsync tzdata tini && \
   cd /tmp && \
   git clone ${PORTABLE_GIT} && \
