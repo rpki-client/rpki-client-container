@@ -45,6 +45,7 @@ ENV BUILDREQ="git autoconf automake expat-dev libtool build-base fts-dev openssl
 
 RUN set -x && \
   echo "@edge https://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories && \
+  echo "@edge https://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories && \
   apk add --no-cache ${BUILDREQ} expat fts openssl libretls@edge rsync tzdata tini && \
   cd /tmp && \
   git clone ${PORTABLE_GIT} && \
