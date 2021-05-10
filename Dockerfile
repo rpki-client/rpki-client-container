@@ -14,7 +14,7 @@
 # OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #
 
-FROM alpine:edge
+FROM alpine:latest
 
 LABEL maintainer="Robert Scheck <https://github.com/rpki-client/rpki-client-container>" \
       description="RPKI validator to support BGP Origin Validation" \
@@ -32,20 +32,20 @@ LABEL maintainer="Robert Scheck <https://github.com/rpki-client/rpki-client-cont
       org.label-schema.vcs-url="https://github.com/rpki-client"
 
 ARG VERSION
-ENV VERSION ${VERSION:-7.0}
+ENV VERSION ${VERSION:-6.8p1}
 ARG PORTABLE_GIT
 ENV PORTABLE_GIT ${PORTABLE_GIT:-https://github.com/rpki-client/rpki-client-portable.git}
 ARG PORTABLE_COMMIT
-ENV PORTABLE_COMMIT ${PORTABLE_COMMIT:-rpki-client-7.0}
+ENV PORTABLE_COMMIT ${PORTABLE_COMMIT:-$VERSION}
 ARG OPENBSD_GIT
 ENV OPENBSD_GIT ${OPENBSD_GIT:-https://github.com/rpki-client/rpki-client-openbsd.git}
 ARG OPENBSD_COMMIT
 ENV OPENBSD_COMMIT ${OPENBSD_COMMIT}
-ENV BUILDREQ="git autoconf automake expat-dev libtool build-base fts-dev openssl-dev libretls-dev"
+ENV BUILDREQ="git autoconf automake expat-dev libtool build-base fts-dev openssl-dev libretls-dev@edge"
 
 RUN set -x && \
-  echo "https://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories && \
-  apk add --no-cache ${BUILDREQ} expat fts openssl libretls rsync tzdata tini && \
+  echo "@edge https://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories && \
+  apk add --no-cache ${BUILDREQ} expat fts openssl libretls@edge rsync tzdata tini && \
   cd /tmp && \
   git clone ${PORTABLE_GIT} && \
   cd rpki-client-portable && \
@@ -62,8 +62,7 @@ RUN set -x && \
     --with-user=rpki-client \
     --with-tal-dir=/etc/tals \
     --with-base-dir=/var/cache/rpki-client \
-    --with-output-dir=/var/lib/rpki-client \
-    --with-openssl-ldflags=-L/usr/lib && \
+    --with-output-dir=/var/lib/rpki-client && \
   make V=1 && \
   addgroup \
     -g 101 \
@@ -80,7 +79,7 @@ RUN set -x && \
   make install-strip INSTALL='install -p' && \
   cd .. && \
   rm -rf rpki-client-portable && \
-  apk del --no-cache ${BUILDREQ}
+  apk del --no-cache ${BUILDREQ//@edge/}
 
 COPY entrypoint.sh healthcheck.sh /
 RUN set -x && \
