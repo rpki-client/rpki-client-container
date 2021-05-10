@@ -44,6 +44,7 @@ ENV OPENBSD_COMMIT ${OPENBSD_COMMIT}
 ENV BUILDREQ="git autoconf automake expat-dev libtool build-base fts-dev openssl-dev libretls-dev"
 
 RUN set -x && \
+  echo "https://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories && \
   apk add --no-cache ${BUILDREQ} expat fts openssl libretls rsync tzdata tini && \
   cd /tmp && \
   git clone ${PORTABLE_GIT} && \
