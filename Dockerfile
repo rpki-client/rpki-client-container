@@ -14,7 +14,7 @@
 # OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #
 
-FROM alpine:latest
+FROM alpine:edge
 
 LABEL maintainer="Robert Scheck <https://github.com/rpki-client/rpki-client-container>" \
       description="RPKI validator to support BGP Origin Validation" \
@@ -32,19 +32,19 @@ LABEL maintainer="Robert Scheck <https://github.com/rpki-client/rpki-client-cont
       org.label-schema.vcs-url="https://github.com/rpki-client"
 
 ARG VERSION
-ENV VERSION ${VERSION:-6.8p1}
+ENV VERSION ${VERSION:-7.0}
 ARG PORTABLE_GIT
 ENV PORTABLE_GIT ${PORTABLE_GIT:-https://github.com/rpki-client/rpki-client-portable.git}
 ARG PORTABLE_COMMIT
-ENV PORTABLE_COMMIT ${PORTABLE_COMMIT:-$VERSION}
+ENV PORTABLE_COMMIT ${PORTABLE_COMMIT:-rpki-client-7.0}
 ARG OPENBSD_GIT
 ENV OPENBSD_GIT ${OPENBSD_GIT:-https://github.com/rpki-client/rpki-client-openbsd.git}
 ARG OPENBSD_COMMIT
 ENV OPENBSD_COMMIT ${OPENBSD_COMMIT}
-ENV BUILDREQ="git autoconf automake expat-dev libtool build-base fts-dev libressl-dev"
+ENV BUILDREQ="git autoconf automake expat-dev libtool build-base fts-dev openssl-dev libretls-dev"
 
 RUN set -x && \
-  apk add --no-cache ${BUILDREQ} expat fts libressl rsync tzdata tini && \
+  apk add --no-cache ${BUILDREQ} expat fts openssl libretls rsync tzdata tini && \
   cd /tmp && \
   git clone ${PORTABLE_GIT} && \
   cd rpki-client-portable && \
@@ -61,7 +61,8 @@ RUN set -x && \
     --with-user=rpki-client \
     --with-tal-dir=/etc/tals \
     --with-base-dir=/var/cache/rpki-client \
-    --with-output-dir=/var/lib/rpki-client && \
+    --with-output-dir=/var/lib/rpki-client \
+    --with-openssl-ldflags=-L/usr/lib && \
   make V=1 && \
   addgroup \
     -g 101 \
