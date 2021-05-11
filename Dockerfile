@@ -31,33 +31,39 @@ LABEL maintainer="Robert Scheck <https://github.com/rpki-client/rpki-client-cont
       org.label-schema.usage="https://man.openbsd.org/rpki-client" \
       org.label-schema.vcs-url="https://github.com/rpki-client"
 
-ARG VERSION
-ENV VERSION ${VERSION:-6.8p1}
+ARG VERSION=6.8p1
 ARG PORTABLE_GIT
-ENV PORTABLE_GIT ${PORTABLE_GIT:-https://github.com/rpki-client/rpki-client-portable.git}
 ARG PORTABLE_COMMIT
-ENV PORTABLE_COMMIT ${PORTABLE_COMMIT:-$VERSION}
 ARG OPENBSD_GIT
-ENV OPENBSD_GIT ${OPENBSD_GIT:-https://github.com/rpki-client/rpki-client-openbsd.git}
 ARG OPENBSD_COMMIT
-ENV OPENBSD_COMMIT ${OPENBSD_COMMIT}
-ENV BUILDREQ="git autoconf automake expat-dev libtool build-base fts-dev openssl-dev libretls-dev@edge"
+
+COPY rpki-client.pub entrypoint.sh healthcheck.sh /
+RUN set -x && \
+  chmod +x /entrypoint.sh /healthcheck.sh
 
 RUN set -x && \
+  export BUILDREQ="git autoconf automake libtool signify build-base fts-dev openssl-dev libretls-dev@edge expat-dev" && \
   echo "@edge https://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories && \
   echo "@edge https://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories && \
-  apk add --no-cache ${BUILDREQ} expat fts openssl libretls@edge rsync tzdata tini && \
+  apk add --no-cache ${BUILDREQ} fts openssl libretls@edge expat rsync tzdata tini && \
   cd /tmp && \
-  git clone ${PORTABLE_GIT} && \
-  cd rpki-client-portable && \
-  git checkout ${PORTABLE_COMMIT} && \
-  git clone ${OPENBSD_GIT} openbsd && \
-  [ -n "${OPENBSD_COMMIT}" ] && { \
+  if [ -z "${PORTABLE_GIT}" -a -z "${PORTABLE_COMMIT}" -a -z "${OPENBSD_GIT}" -a -z "${OPENBSD_COMMIT}" ]; then \
+    wget https://ftp.openbsd.org/pub/OpenBSD/rpki-client/rpki-client-${VERSION}.tar.gz && \
+    wget https://ftp.openbsd.org/pub/OpenBSD/rpki-client/SHA256.sig && \
+    signify -C -p /rpki-client.pub -x SHA256.sig rpki-client-${VERSION}.tar.gz && \
+    tar xfz rpki-client-${VERSION}.tar.gz && \
+    cd rpki-client-${VERSION}; \
+  else \
+    git clone ${PORTABLE_GIT:-https://github.com/rpki-client/rpki-client-portable.git} && \
+    cd rpki-client-portable && \
+    git checkout ${PORTABLE_COMMIT:-master} && \
+    git clone ${OPENBSD_GIT:-https://github.com/rpki-client/rpki-client-openbsd.git} openbsd && \
     cd openbsd && \
-    git checkout ${OPENBSD_COMMIT} && \
+    git checkout ${OPENBSD_COMMIT:-master} && \
     rm -rf .git && \
-    cd ..; } || : && \
-  ./autogen.sh && \
+    cd .. && \
+    ./autogen.sh; \
+  fi && \
   ./configure \
     --prefix=/usr \
     --with-user=rpki-client \
@@ -79,12 +85,9 @@ RUN set -x && \
     rpki-client && \
   make install-strip INSTALL='install -p' && \
   cd .. && \
-  rm -rf rpki-client-portable && \
-  apk del --no-cache ${BUILDREQ//@edge/}
-
-COPY entrypoint.sh healthcheck.sh /
-RUN set -x && \
-  chmod +x /entrypoint.sh /healthcheck.sh
+  rm -rf ${OLDPWD} /rpki-client.pub SHA256.sig && \
+  apk del --no-cache ${BUILDREQ//@edge/} && \
+  rpki-client -V
 
 ENV TZ=UTC
 VOLUME ["/etc/tals/", "/var/cache/rpki-client/", "/var/lib/rpki-client/"]

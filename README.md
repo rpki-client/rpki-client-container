@@ -43,11 +43,13 @@ While none of the volumes is required, meaningful usage requires at least persis
 
 For custom OCI images, the following build arguments can be passed:
 
-  * `VERSION` - Git tag or branch of the portability shim, e.g. `master`, `OPENBSD_6_8` or `6.8p1`, defaults to `6.8p1`.
+  * `VERSION` - Version of the signed portability shim release tarball, defaults to `6.8p1`.
   * `PORTABLE_GIT` - Git repository URL of the portability shim, defaults to `https://github.com/rpki-client/rpki-client-portable.git`.
-  * `PORTABLE_COMMIT` - Git commit, branch or tag of the portability shim, defaults to `$VERSION`.
+  * `PORTABLE_COMMIT` - Git commit, branch or tag of the portability shim, e.g. `master`, unset by default.
   * `OPENBSD_GIT` - Git repository URL of the OpenBSD source code, defaults to `https://github.com/rpki-client/rpki-client-openbsd.git`.
-  * `OPENBSD_COMMIT` - Git commit, branch or tag of the OpenBSD source code, defaults to the branch [mentioned](https://github.com/rpki-client/rpki-client-portable/blob/master/OPENBSD_BRANCH) in the portability shim.
+  * `OPENBSD_COMMIT` - Git commit, branch or tag of the OpenBSD source code, e.g. `master`, unset by default.
+
+To build a custom OCI image from current Git, e.g. `--build-arg PORTABLE_COMMIT=master` needs to be passed.
 
 ## Pipeline / Workflow
 
