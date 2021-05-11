@@ -33,6 +33,7 @@ fi
 # Check for the expected command
 if [ "$1" = 'rpki-client' ]; then
   [ "$2" = '-V' ] && ONESHOT=1
+  chown -R rpki-client:rpki-client /var/cache/rpki-client/ /var/lib/rpki-client/ 2> /dev/null || :
   case "$ONESHOT" in
     1|y*|Y*|t*|T*)
       exec "$@"
