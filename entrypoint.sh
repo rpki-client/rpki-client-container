@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Copyright (c) 2020 Robert Scheck <robert@fedoraproject.org>
+# Copyright (c) 2020-2021 Robert Scheck <robert@fedoraproject.org>
 #
 # Permission to use, copy, modify, and distribute this software for any
 # purpose with or without fee is hereby granted, provided that the above
@@ -32,6 +32,7 @@ fi
 
 # Check for the expected command
 if [ "$1" = 'rpki-client' ]; then
+  [ "$2" = '-V' ] && ONESHOT=1
   case "$ONESHOT" in
     1|y*|Y*|t*|T*)
       exec "$@"
