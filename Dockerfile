@@ -52,6 +52,7 @@ RUN set -x && \
     wget https://ftp.openbsd.org/pub/OpenBSD/rpki-client/SHA256.sig && \
     signify -C -p /rpki-client.pub -x SHA256.sig rpki-client-${VERSION}.tar.gz && \
     tar xfz rpki-client-${VERSION}.tar.gz && \
+    wget https://raw.githubusercontent.com/rpki-client/rpki-client-portable/26c473de8796caaca2a1f5b203e1c853dee81daf/include/sys/wait.h -O - | tee /dev/stderr > rpki-client-${VERSION}/include/sys/wait.h && \
     cd rpki-client-${VERSION}; \
   else \
     git clone ${PORTABLE_GIT:-https://github.com/rpki-client/rpki-client-portable.git} && \
