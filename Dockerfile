@@ -14,7 +14,7 @@
 # OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #
 
-FROM alpine:3.13
+FROM alpine:latest
 
 LABEL maintainer="Robert Scheck <https://github.com/rpki-client/rpki-client-container>" \
       description="RPKI validator to support BGP Origin Validation" \
