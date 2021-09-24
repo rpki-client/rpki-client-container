@@ -42,11 +42,9 @@ RUN set -x && \
   chmod +x /entrypoint.sh /healthcheck.sh
 
 RUN set -x && \
-  export BUILDREQ="git autoconf automake libtool signify build-base fts-dev openssl-dev libretls-dev@edge expat-dev" && \
-  echo "@edge https://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories && \
-  echo "@edge https://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories && \
+  export BUILDREQ="git autoconf automake libtool signify build-base fts-dev openssl-dev libretls-dev expat-dev" && \
   apk --no-cache upgrade && \
-  apk --no-cache add ${BUILDREQ} fts openssl libretls@edge expat rsync tzdata tini && \
+  apk --no-cache add ${BUILDREQ} fts openssl libretls expat rsync tzdata tini && \
   cd /tmp && \
   if [ -z "${PORTABLE_GIT}" -a -z "${PORTABLE_COMMIT}" -a -z "${OPENBSD_GIT}" -a -z "${OPENBSD_COMMIT}" ]; then \
     wget https://ftp.openbsd.org/pub/OpenBSD/rpki-client/rpki-client-${VERSION}.tar.gz && \
