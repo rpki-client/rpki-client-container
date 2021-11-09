@@ -51,6 +51,7 @@ RUN set -x && \
     wget https://ftp.openbsd.org/pub/OpenBSD/rpki-client/SHA256.sig && \
     signify -C -p /rpki-client.pub -x SHA256.sig rpki-client-${VERSION}.tar.gz && \
     tar xfz rpki-client-${VERSION}.tar.gz && \
+    rm -f rpki-client-${VERSION}.tar.gz && \
     cd rpki-client-${VERSION}; \
   else \
     git clone ${PORTABLE_GIT:-https://github.com/rpki-client/rpki-client-portable.git} && \
@@ -85,7 +86,7 @@ RUN set -x && \
   make install-strip INSTALL='install -p' && \
   cd .. && \
   rm -rf ${OLDPWD} /rpki-client.pub SHA256.sig && \
-  apk --no-cache del ${BUILDREQ//@edge/} && \
+  apk --no-cache del ${BUILDREQ} && \
   rpki-client -V
 
 ENV TZ=UTC
