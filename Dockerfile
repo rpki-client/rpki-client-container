@@ -17,16 +17,16 @@
 FROM alpine:latest
 
 LABEL maintainer="Robert Scheck <https://github.com/rpki-client/rpki-client-container>" \
-      description="RPKI validator to support BGP Origin Validation" \
+      description="OpenBSD RPKI validator to support BGP Origin Validation" \
       org.opencontainers.image.title="rpki-client" \
-      org.opencontainers.image.description="RPKI validator to support BGP Origin Validation" \
+      org.opencontainers.image.description="OpenBSD RPKI validator to support BGP Origin Validation" \
       org.opencontainers.image.url="https://www.rpki-client.org/" \
       org.opencontainers.image.documentation="https://man.openbsd.org/rpki-client" \
       org.opencontainers.image.source="https://github.com/rpki-client" \
       org.opencontainers.image.licenses="ISC" \
       org.label-schema.schema-version="1.0" \
       org.label-schema.name="rpki-client" \
-      org.label-schema.description="RPKI validator to support BGP Origin Validation" \
+      org.label-schema.description="OpenBSD RPKI validator to support BGP Origin Validation" \
       org.label-schema.url="https://www.rpki-client.org/" \
       org.label-schema.usage="https://man.openbsd.org/rpki-client" \
       org.label-schema.vcs-url="https://github.com/rpki-client"
