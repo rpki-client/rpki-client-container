@@ -52,6 +52,7 @@ RUN set -x && \
     signify -C -p /rpki-client.pub -x SHA256.sig rpki-client-${VERSION}.tar.gz && \
     tar xfz rpki-client-${VERSION}.tar.gz && \
     rm -f rpki-client-${VERSION}.tar.gz && \
+    wget https://github.com/rpki-client/rpki-client-openbsd/commit/310baa7d9041619ee76d22941211cbdac7f061af.patch -O - | sed -e '18,23d' | tee /dev/stderr | patch -p4 -d rpki-client-${VERSION}/src && \
     cd rpki-client-${VERSION}; \
   else \
     git clone ${PORTABLE_GIT:-https://github.com/rpki-client/rpki-client-portable.git} && \
