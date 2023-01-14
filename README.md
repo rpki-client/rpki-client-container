@@ -1,5 +1,9 @@
 # Container image for rpki-client
 
+[![Build OCI image](https://github.com/rpki-client/rpki-client-container/actions/workflows/image.yml/badge.svg)](https://github.com/rpki-client/rpki-client-container/actions/workflows/image.yml)
+[![Docker pulls](https://img.shields.io/docker/pulls/rpki/rpki-client.svg)](https://hub.docker.com/r/rpki/rpki-client)
+[![OCI image size](https://img.shields.io/docker/image-size/rpki/rpki-client/latest.svg)](https://hub.docker.com/r/rpki/rpki-client/tags)
+
 ## About
 
 Source files and build instructions for an [OCI](https://opencontainers.org/) image (compatible with e.g. Docker or Podman) for [rpki-client](https://www.rpki-client.org/). It's an RPKI validator to support BGP Origin Validation.
