@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Copyright (c) 2020 Robert Scheck <robert@fedoraproject.org>
+# Copyright (c) 2020-2023 Robert Scheck <robert@fedoraproject.org>
 #
 # Permission to use, copy, modify, and distribute this software for any
 # purpose with or without fee is hereby granted, provided that the above
@@ -16,9 +16,9 @@
 #
 
 set -e
-[ -n "$DEBUG" ] && set -x
+[ -n "${DEBUG}" ] && set -x
 
-case "$ONESHOT" in
+case "${ONESHOT}" in
   1|y*|Y*|t*|T*)
     PID=$(pidof -s rpki-client 2> /dev/null)
     ;;
@@ -31,4 +31,4 @@ case "$ONESHOT" in
     ;;
 esac
 
-[ -n "$PID" -a -d "/proc/$PID" ] && exit 0 || exit 1
+[ -n "${PID}" ] && [ -d "/proc/${PID}" ] && exit 0 || exit 1

@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Copyright (c) 2020-2021 Robert Scheck <robert@fedoraproject.org>
+# Copyright (c) 2020-2023 Robert Scheck <robert@fedoraproject.org>
 #
 # Permission to use, copy, modify, and distribute this software for any
 # purpose with or without fee is hereby granted, provided that the above
@@ -16,7 +16,7 @@
 #
 
 set -e
-[ -n "$DEBUG" ] && set -x
+[ -n "${DEBUG}" ] && set -x
 
 # Catch container interruption signals to remove hint file for health script
 cleanup() {
@@ -26,20 +26,21 @@ trap cleanup INT TERM
 
 # Check if first argument is a flag, but only works if all arguments require
 # a hyphenated flag: -v; -SL; -f arg; etc. will work, but not arg1 arg2
-if [ "$#" -eq 0 -o "${1#-}" != "$1" ]; then
+if [ "$#" -eq 0 ] || [ "${1#-}" != "$1" ]; then
   set -- rpki-client "$@"
 fi
 
 # Check for the expected command
 if [ "$1" = 'rpki-client' ]; then
   [ "$2" = '-V' ] && ONESHOT=1
-  chown -R rpki-client:rpki-client /var/cache/rpki-client/ /var/lib/rpki-client/ 2> /dev/null || :
-  case "$ONESHOT" in
+  chown -R rpki-client:rpki-client /var/cache/rpki-client/ \
+    /var/lib/rpki-client/ 2> /dev/null || :
+  case "${ONESHOT}" in
     1|y*|Y*|t*|T*)
       exec "$@"
       ;;
     *)
-      echo "$(date +%M) * * * * $@ > /dev/stdout 2>&1" > /etc/crontabs/root
+      echo "$(date +%M) * * * * $* > /dev/stdout 2>&1" > /etc/crontabs/root
       touch /tmp/crond.not-started-yet
       "$@"
       cleanup
