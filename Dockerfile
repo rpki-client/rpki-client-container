@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2020-2022 Robert Scheck <robert@fedoraproject.org>
+# Copyright (c) 2020-2023 Robert Scheck <robert@fedoraproject.org>
 #
 # Permission to use, copy, modify, and distribute this software for any
 # purpose with or without fee is hereby granted, provided that the above
@@ -93,5 +93,5 @@ ENV TZ=UTC
 VOLUME ["/etc/tals/", "/var/cache/rpki-client/", "/var/lib/rpki-client/"]
 
 ENTRYPOINT ["/sbin/tini", "-g", "--", "/entrypoint.sh"]
-CMD ["rpki-client", "-B", "-c", "-j", "-o", "-v"]
+CMD ["rpki-client", "-B", "-c", "-j", "-m", "-o", "-v"]
 HEALTHCHECK CMD ["/healthcheck.sh"]
