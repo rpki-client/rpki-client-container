@@ -47,19 +47,19 @@ RUN set -x && \
   apk --no-cache add ${BUILDREQ} musl-fts openssl libretls expat rsync tzdata tini && \
   cd /tmp && \
   if [ -z "${PORTABLE_GIT}" -a -z "${PORTABLE_COMMIT}" -a -z "${OPENBSD_GIT}" -a -z "${OPENBSD_COMMIT}" ]; then \
-    wget https://ftp.openbsd.org/pub/OpenBSD/rpki-client/rpki-client-${VERSION}.tar.gz && \
+    wget "https://ftp.openbsd.org/pub/OpenBSD/rpki-client/rpki-client-${VERSION}.tar.gz" && \
     wget https://ftp.openbsd.org/pub/OpenBSD/rpki-client/SHA256.sig && \
-    signify -C -p /rpki-client.pub -x SHA256.sig rpki-client-${VERSION}.tar.gz && \
-    tar xfz rpki-client-${VERSION}.tar.gz && \
-    rm -f rpki-client-${VERSION}.tar.gz && \
-    cd rpki-client-${VERSION}; \
+    signify -C -p /rpki-client.pub -x SHA256.sig "rpki-client-${VERSION}.tar.gz" && \
+    tar xfz "rpki-client-${VERSION}.tar.gz" && \
+    rm -f "rpki-client-${VERSION}.tar.gz" && \
+    cd "rpki-client-${VERSION}"; \
   else \
-    git clone ${PORTABLE_GIT:-https://github.com/rpki-client/rpki-client-portable.git} && \
+    git clone "${PORTABLE_GIT:-https://github.com/rpki-client/rpki-client-portable.git}" && \
     cd rpki-client-portable && \
-    git checkout ${PORTABLE_COMMIT:-master} && \
-    git clone ${OPENBSD_GIT:-https://github.com/rpki-client/rpki-client-openbsd.git} openbsd && \
+    git checkout "${PORTABLE_COMMIT:-master}" && \
+    git clone "${OPENBSD_GIT:-https://github.com/rpki-client/rpki-client-openbsd.git}" openbsd && \
     cd openbsd && \
-    git checkout ${OPENBSD_COMMIT:-master} && \
+    git checkout "${OPENBSD_COMMIT:-master}" && \
     rm -rf .git && \
     cd .. && \
     ./autogen.sh; \
@@ -85,7 +85,7 @@ RUN set -x && \
     rpki-client && \
   make install-strip INSTALL='install -p' && \
   cd .. && \
-  rm -rf ${OLDPWD} /rpki-client.pub SHA256.sig && \
+  rm -rf "${OLDPWD}" /rpki-client.pub SHA256.sig && \
   apk --no-cache del ${BUILDREQ} && \
   rpki-client -V
 
