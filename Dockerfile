@@ -54,14 +54,10 @@ RUN set -x && \
     rm -f "rpki-client-${VERSION}.tar.gz" && \
     cd "rpki-client-${VERSION}"; \
   else \
-    git clone "${PORTABLE_GIT:-https://github.com/rpki-client/rpki-client-portable.git}" && \
+    git clone -b "${PORTABLE_COMMIT:-master}" --single-branch "${PORTABLE_GIT:-https://github.com/rpki-client/rpki-client-portable.git}" && \
     cd rpki-client-portable && \
-    git checkout "${PORTABLE_COMMIT:-master}" && \
-    git clone "${OPENBSD_GIT:-https://github.com/rpki-client/rpki-client-openbsd.git}" openbsd && \
-    cd openbsd && \
-    git checkout "${OPENBSD_COMMIT:-master}" && \
-    rm -rf .git && \
-    cd .. && \
+    git clone -b "${OPENBSD_COMMIT:-master}" --single-branch "${OPENBSD_GIT:-https://github.com/rpki-client/rpki-client-openbsd.git}" openbsd && \
+    rm -rf openbsd/.git/ && \
     ./autogen.sh; \
   fi && \
   ./configure \
