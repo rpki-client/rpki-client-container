@@ -39,7 +39,7 @@ ARG OPENBSD_COMMIT
 
 COPY rpki-client.pub entrypoint.sh healthcheck.sh /
 RUN set -x && \
-  chmod +x /entrypoint.sh /healthcheck.sh
+  chmod 0755 /entrypoint.sh /healthcheck.sh
 
 RUN set -x && \
   export BUILDREQ="git autoconf automake libtool signify build-base musl-fts-dev openssl-dev libretls-dev expat-dev" && \
