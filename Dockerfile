@@ -37,14 +37,14 @@ ARG PORTABLE_COMMIT
 ARG OPENBSD_GIT
 ARG OPENBSD_COMMIT
 
-COPY rpki-client.pub entrypoint.sh healthcheck.sh /
+COPY entrypoint.sh healthcheck.sh rpki-client.pub rpki-client.sh /
 RUN set -x && \
-  chmod 0755 /entrypoint.sh /healthcheck.sh
+  chmod 0755 /entrypoint.sh /healthcheck.sh /rpki-client.sh
 
 RUN set -x && \
   export BUILDREQ="git autoconf automake libtool signify build-base musl-fts-dev openssl-dev libretls-dev expat-dev" && \
   apk --no-cache upgrade && \
-  apk --no-cache add ${BUILDREQ} musl-fts openssl libretls expat rsync tzdata tini && \
+  apk --no-cache add ${BUILDREQ} expat libretls multirun musl-fts openssl rsync tzdata && \
   cd /tmp && \
   if [ -z "${PORTABLE_GIT}" -a -z "${PORTABLE_COMMIT}" -a -z "${OPENBSD_GIT}" -a -z "${OPENBSD_COMMIT}" ]; then \
     wget "https://ftp.openbsd.org/pub/OpenBSD/rpki-client/rpki-client-${VERSION}.tar.gz" && \
@@ -68,7 +68,7 @@ RUN set -x && \
     --with-output-dir=/var/lib/rpki-client && \
   make V=1 && \
   addgroup \
-    -g 101 \
+    -g 900 \
     -S \
     rpki-client && \
   adduser \
@@ -77,7 +77,7 @@ RUN set -x && \
     -G rpki-client \
     -S \
     -D \
-    -u 100 \
+    -u 900 \
     rpki-client && \
   make install-strip INSTALL='install -p' && \
   cd .. && \
@@ -88,6 +88,6 @@ RUN set -x && \
 ENV TZ=UTC
 VOLUME ["/etc/tals/", "/var/cache/rpki-client/", "/var/lib/rpki-client/"]
 
-ENTRYPOINT ["/sbin/tini", "-g", "--", "/entrypoint.sh"]
+ENTRYPOINT ["/entrypoint.sh"]
 CMD ["rpki-client", "-B", "-c", "-j", "-m", "-o", "-v"]
 HEALTHCHECK CMD ["/healthcheck.sh"]

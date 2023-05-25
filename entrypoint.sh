@@ -15,12 +15,11 @@
 # OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #
 
-set -e
-[ -n "${DEBUG}" ] && set -x
+set -e ${DEBUG:+-x}
 
 # Catch container interruption signals to remove hint file for health script
 cleanup() {
-  rm -f /tmp/crond.not-started-yet
+  rm -f /tmp/rpki-client.client-expected
 }
 trap cleanup INT TERM
 
@@ -40,11 +39,7 @@ if [ "$1" = 'rpki-client' ]; then
       exec "$@"
       ;;
     *)
-      echo "$(date +%M) * * * * $* > /dev/stdout 2>&1" > /etc/crontabs/root
-      touch /tmp/crond.not-started-yet
-      "$@"
-      cleanup
-      exec crond -f -d 15
+      exec multirun ${DEBUG:+-v} "/rpki-client.sh $*"
       ;;
   esac
 fi

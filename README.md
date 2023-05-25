@@ -34,7 +34,7 @@ podman run --name rpki-client \
 
 ## Volumes
 
-  * `/etc/tals` - Directory for Trust Anchor Location (TAL) files that `rpki-client` will load by default. ARIN TAL must be [downloaded separately](https://www.arin.net/resources/manage/rpki/tal/#arin-tal) in RFC 7730 format, because the ARIN Relying Party Agreement (RPA) must be accepted.
+  * `/etc/tals` - Directory for Trust Anchor Location (TAL) files that `rpki-client` will load by default. ARIN TAL must be [downloaded separately](https://www.arin.net/resources/manage/rpki/tal/#downloading-the-arin-tal) in RFC 7730 format, because the ARIN Relying Party Agreement (RPA) must be accepted.
   * `/var/lib/rpki-client` - Directory where `rpki-client` will write the output files. By default BIRD and OpenBGPD compatible outputs as well as CSV and JSON formats are generated.
   * `/var/cache/rpki-client` - Directory where `rpki-client` will store the cached repository data. To speed-up the performance, persistent storage is recommented.
 
@@ -43,7 +43,8 @@ While none of the volumes is required, meaningful usage requires at least persis
 ## Environment Variables
 
   * `TZ` - Time zone according to IANA's time zone database, e.g. `Europe/Amsterdam`, defaults to `UTC`.
-  * `ONESHOT` - Set to `true` to run `rpki-client` only once rather hourly, defaults to `false`.
+  * `ONESHOT` - Set to `true` to run `rpki-client` only once instead of periodically, defaults to `false`.
+  * `WAIT` - Seconds to wait before restarting after `rpki-client` exited successfully, defaults to `600`.
 
 ## Custom images
 

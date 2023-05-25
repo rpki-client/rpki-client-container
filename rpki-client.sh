@@ -17,13 +17,9 @@
 
 set -e ${DEBUG:+-x}
 
-case "${ONESHOT}" in
-  1|y*|Y*|t*|T*)
-    pidof rpki-client > /dev/null
-    ;;
-  *)
-    [ -f /tmp/rpki-client.client-expected ] && pidof rpki-client > /dev/null
-    ;;
-esac
-
-exit 0
+while true; do
+  touch /tmp/rpki-client.client-expected
+  "$@"
+  rm -f /tmp/rpki-client.client-expected
+  sleep "${WAIT:-600}"
+done
