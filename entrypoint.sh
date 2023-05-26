@@ -39,7 +39,8 @@ if [ "$1" = 'rpki-client' ]; then
       exec "$@"
       ;;
     *)
-      exec multirun ${DEBUG:+-v} "/rpki-client.sh $*"
+      exec multirun ${DEBUG:+-v} "/rpki-client.sh $*" \
+        'haproxy -f /etc/haproxy/haproxy.cfg -q -W -S /run/haproxy.sock'
       ;;
   esac
 fi

@@ -37,14 +37,14 @@ ARG PORTABLE_COMMIT
 ARG OPENBSD_GIT
 ARG OPENBSD_COMMIT
 
-COPY entrypoint.sh healthcheck.sh rpki-client.pub rpki-client.sh /
+COPY entrypoint.sh haproxy.cfg healthcheck.sh rpki-client.pub rpki-client.sh /
 RUN set -x && \
   chmod 0755 /entrypoint.sh /healthcheck.sh /rpki-client.sh
 
 RUN set -x && \
   export BUILDREQ="git autoconf automake libtool signify build-base musl-fts-dev openssl-dev libretls-dev expat-dev" && \
   apk --no-cache upgrade && \
-  apk --no-cache add ${BUILDREQ} expat libretls multirun musl-fts openssl rsync tzdata && \
+  apk --no-cache add ${BUILDREQ} expat haproxy libretls multirun musl-fts netcat-openbsd openssl rsync tzdata && \
   cd /tmp && \
   if [ -z "${PORTABLE_GIT}" -a -z "${PORTABLE_COMMIT}" -a -z "${OPENBSD_GIT}" -a -z "${OPENBSD_COMMIT}" ]; then \
     wget "https://ftp.openbsd.org/pub/OpenBSD/rpki-client/rpki-client-${VERSION}.tar.gz" && \
@@ -83,10 +83,12 @@ RUN set -x && \
   cd .. && \
   rm -rf "${OLDPWD}" /rpki-client.pub SHA256.sig && \
   apk --no-cache del ${BUILDREQ} && \
+  mv -f /haproxy.cfg /etc/haproxy/haproxy.cfg && \
   rpki-client -V
 
 ENV TZ=UTC
 VOLUME ["/etc/tals/", "/var/cache/rpki-client/", "/var/lib/rpki-client/"]
+EXPOSE 9099
 
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["rpki-client", "-B", "-c", "-j", "-m", "-o", "-v"]

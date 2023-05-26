@@ -46,6 +46,10 @@ While none of the volumes is required, meaningful usage requires at least persis
   * `ONESHOT` - Set to `true` to run `rpki-client` only once instead of periodically, defaults to `false`.
   * `WAIT` - Seconds to wait before restarting after `rpki-client` exited successfully, defaults to `600`.
 
+## Exposed Ports
+
+  * `9099` - [TCP port](https://datatracker.ietf.org/doc/html/draft-richih-opsawg-openmetrics-00#section-7) for optional `rpki-client` output in OpenMetrics format via HTTP endpoint `/metrics`.
+
 ## Custom images
 
 For custom OCI images, the following build arguments can be passed:
@@ -76,6 +80,6 @@ Each commit to a Git branch triggers the workflow and leads to OCI images being 
 
 This project is licensed under the ISC License - see the [LICENSE](LICENSE) file for details.
 
-As with all OCI images, these also contain other software under other licenses (such as BusyBox, OpenSSL etc. from the base distribution, along with any direct or indirect dependencies of the contained rpki-client).
+As with all OCI images, these also contain other software under other licenses (such as BusyBox, HAProxy, OpenSSL etc. from the base distribution, along with any direct or indirect dependencies of the contained rpki-client).
 
 As for any pre-built image usage, it is the image user's responsibility to ensure that any use of this image complies with any relevant licenses for all software contained within.
