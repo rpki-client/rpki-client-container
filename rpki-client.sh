@@ -22,7 +22,7 @@ touch /var/lib/rpki-client/metrics
 chown rpki-client:rpki-client /var/lib/rpki-client/metrics
 
 while true; do
-  # Actually run rpki-client and handle /healthcheck.sh
+  # Actually run rpki-client and handle health script
   touch /tmp/rpki-client.client-expected
   "$@"
   rm -f /tmp/rpki-client.client-expected
