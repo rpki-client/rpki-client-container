@@ -42,9 +42,9 @@ RUN set -x && \
   chmod 0755 /entrypoint.sh /healthcheck.sh /rpki-client.sh
 
 RUN set -x && \
-  export BUILDREQ="git autoconf automake libtool signify build-base musl-fts-dev openssl-dev libretls-dev expat-dev" && \
+  export BUILDREQ="git autoconf automake libtool signify build-base musl-fts-dev openssl-dev libretls-dev expat-dev zlib-dev" && \
   apk --no-cache upgrade && \
-  apk --no-cache add ${BUILDREQ} expat haproxy libretls multirun musl-fts netcat-openbsd openssl rsync tzdata && \
+  apk --no-cache add ${BUILDREQ} expat haproxy libretls multirun musl-fts netcat-openbsd openssl rsync tzdata zlib && \
   cd /tmp/ && \
   if [ -z "${PORTABLE_GIT}" -a -z "${PORTABLE_COMMIT}" -a -z "${OPENBSD_GIT}" -a -z "${OPENBSD_COMMIT}" ]; then \
     wget "https://ftp.openbsd.org/pub/OpenBSD/rpki-client/rpki-client-${VERSION}.tar.gz" && \
