@@ -17,9 +17,7 @@
 
 set -e ${DEBUG:+-x}
 
-# Create empty file for HAProxy "http-response return" feature
-touch /var/lib/rpki-client/metrics
-chown rpki-client:rpki-client /var/lib/rpki-client/metrics
+. /entrypoint.sh
 
 while true; do
   # Actually run rpki-client and handle health script
@@ -28,11 +26,10 @@ while true; do
   rm -f /tmp/rpki-client.client-expected
 
   # Size of HAProxy "http-response return" must be smaller than "tune.bufsize"
-  bufsize=$(($(stat -c %s /var/lib/rpki-client/metrics 2> /dev/null) + 16384))
-  sed -e "s/^\(\stune\.bufsize\) .*/\1 ${bufsize}/" -i /etc/haproxy/haproxy.cfg
+  reconfigure
 
   # Reload HAProxy using "master CLI" (primarily for caching new metrics file)
-  echo 'reload' | nc -U /run/haproxy.sock
+  [ -S /run/haproxy.sock ] && echo 'reload' | nc -U /run/haproxy.sock
 
   # Wait before running rpki-client again
   sleep "${WAIT:-600}"

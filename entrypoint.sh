@@ -17,6 +17,13 @@
 
 set -e ${DEBUG:+-x}
 
+# Size of HAProxy "http-response return" must be smaller than "tune.bufsize"
+reconfigure() {
+  bufsize=$(($(stat -c %s /var/lib/rpki-client/metrics 2> /dev/null) + 16384))
+  sed -e "s/^\(\stune\.bufsize\) .*/\1 ${bufsize}/" -i /etc/haproxy/haproxy.cfg
+}
+[ "$0" = "/rpki-client.sh" ] && return
+
 # Catch container interruption signals to remove hint file for health script
 cleanup() {
   rm -f /tmp/rpki-client.client-expected
@@ -39,9 +46,18 @@ if [ "$1" = 'rpki-client' ]; then
       exec "$@"
       ;;
     *)
+      # Create empty file for HAProxy "http-response return" feature
+      touch /var/lib/rpki-client/metrics
+      chown rpki-client:rpki-client /var/lib/rpki-client/metrics
+      reconfigure
+
+      # Remove IPv6 bind if host system disabled IPv6 support completely
+      [ -f /proc/net/if_inet6 ] || sed -e '/^[[:space:]]bind \[::\]:/d' \
+                                       -i /etc/haproxy/haproxy.cfg
+
       exec multirun ${DEBUG:+-v} "/rpki-client.sh $*" \
         'haproxy -f /etc/haproxy/haproxy.cfg -q -W -S /run/haproxy.sock'
-      ;;
+       ;;
   esac
 fi
 
