@@ -52,12 +52,12 @@ if [ "$1" = 'rpki-client' ]; then
       reconfigure
 
       # Remove IPv6 bind if host system disabled IPv6 support completely
-      [ -f /proc/net/if_inet6 ] || sed -e '/^[[:space:]]bind \[::\]:/d' \
+      [ -f /proc/net/if_inet6 ] || sed -e '/^[[:space:]]*bind \[::\]:/d' \
                                        -i /etc/haproxy/haproxy.cfg
 
       exec multirun ${DEBUG:+-v} "/rpki-client.sh $*" \
         'haproxy -f /etc/haproxy/haproxy.cfg -q -W -S /run/haproxy.sock'
-       ;;
+      ;;
   esac
 fi
 
