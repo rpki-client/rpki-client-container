@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2020-2023 Robert Scheck <robert@fedoraproject.org>
+# Copyright (c) 2020-2024 Robert Scheck <robert@fedoraproject.org>
 #
 # Permission to use, copy, modify, and distribute this software for any
 # purpose with or without fee is hereby granted, provided that the above
@@ -31,7 +31,7 @@ LABEL maintainer="Robert Scheck <https://github.com/rpki-client/rpki-client-cont
       org.label-schema.usage="https://man.openbsd.org/rpki-client" \
       org.label-schema.vcs-url="https://github.com/rpki-client"
 
-ARG VERSION=8.8
+ARG VERSION=8.9
 ARG PORTABLE_GIT
 ARG PORTABLE_COMMIT
 ARG OPENBSD_GIT
