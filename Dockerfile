@@ -57,6 +57,8 @@ RUN set -x && \
     cd rpki-client-portable/ && \
     git clone -b "${OPENBSD_COMMIT:-master}" --single-branch "${OPENBSD_GIT:-https://github.com/rpki-client/rpki-client-openbsd.git}" openbsd/ && \
     rm -rf openbsd/.git/ && \
+    wget https://git.savannah.gnu.org/cgit/autoconf.git/plain/build-aux/config.guess?id=6199cff2909e0ac84c9391aa49ed097d6a33268d -O - | tee /dev/stderr > scripts/config.guess && \
+    wget https://git.savannah.gnu.org/cgit/autoconf.git/plain/build-aux/config.sub?id=6199cff2909e0ac84c9391aa49ed097d6a33268d -O - | tee /dev/stderr > scripts/config.sub && \
     ./autogen.sh; \
   fi && \
   ./configure \
