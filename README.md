@@ -54,7 +54,7 @@ While none of the volumes is required, meaningful usage requires at least persis
 
 For custom OCI images, the following build arguments can be passed:
 
-  * `VERSION` - Version of the signed portability shim release tarball, defaults to `9.3`.
+  * `VERSION` - Version of the signed portability shim release tarball, defaults to `9.4`.
   * `PORTABLE_GIT` - Git repository URL of the portability shim, defaults to `https://github.com/rpki-client/rpki-client-portable.git`.
   * `PORTABLE_COMMIT` - Git commit, branch or tag of the portability shim, e.g. `master`, unset by default.
   * `OPENBSD_GIT` - Git repository URL of the OpenBSD source code, defaults to `https://github.com/rpki-client/rpki-client-openbsd.git`.
@@ -68,7 +68,7 @@ To build a custom OCI image from current Git, e.g. `--build-arg PORTABLE_COMMIT=
 
 Thus the OCI images are effectively built within the GitHub infrastructure (using [free minutes](https://docs.github.com/en/github/setting-up-and-managing-billing-and-payments-on-github/about-billing-for-github-actions) for public repositories) and then only pushed to both container repositories, Docker Hub and Quay (which are also free for public repositories). This not only saves repeated CPU resources but also ensures identical bugs independent from which container repository the OCI image gets finally pulled (and somehow tries to keep it distant from program changes such as [Docker Hub Rate Limiting](https://www.docker.com/increase-rate-limits) in 2020). The authentication for the pushes to the container repositories happen using access tokens, which at Docker Hub need to be bound to a (community) user and at Quay using a robot account as part of the organization. These access tokens are saved as "repository secrets" as part of the settings of the GitHub project.
 
-For each release of the project, a new Git branch (named like the version of the release, e.g. `9.3`) is created (based on the default branch, e.g. `master`). The workflow takes care about creating and moving container tags, such as `latest`. By not using Git tags but branches, downstream bug fixes can be easily applied to the OCI image (e.g. for bugs in the `Dockerfile` or patches for the source code itself). Old branches are not touched anymore, equivalent to old release archives.
+For each release of the project, a new Git branch (named like the version of the release, e.g. `9.4`) is created (based on the default branch, e.g. `master`). The workflow takes care about creating and moving container tags, such as `latest`. By not using Git tags but branches, downstream bug fixes can be easily applied to the OCI image (e.g. for bugs in the `Dockerfile` or patches for the source code itself). Old branches are not touched anymore, equivalent to old release archives.
 
 Each commit to a Git branch triggers the workflow and leads to OCI images being pushed (except for GitHub pull requests), where the container tag is always based on the Git branch name. OCI images with non-release container tags pushed for testing purposes need to be cleaned up manually at the container repositories. Additionally, a cron-like option in the workflow leads to a nightly build being also tagged as `edge`.
 
