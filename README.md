@@ -16,7 +16,6 @@ The OCI image automatically refreshs the Validated ROA Payloads (VRPs) hourly. I
 
 ```shell
 docker run --name rpki-client \
-           --volume /path/to/rpki-client/tals/arin.tal:/etc/tals/arin.tal \
            --volume /path/to/rpki-client/output:/var/lib/rpki-client \
            --volume /path/to/rpki-client/cache:/var/cache/rpki-client \
            --detach rpki/rpki-client:latest
@@ -26,7 +25,6 @@ And it may be started with Podman using:
 
 ```shell
 podman run --name rpki-client \
-           --volume /path/to/rpki-client/tals/arin.tal:/etc/tals/arin.tal \
            --volume /path/to/rpki-client/output:/var/lib/rpki-client \
            --volume /path/to/rpki-client/cache:/var/cache/rpki-client \
            --detach quay.io/rpki/rpki-client:latest
@@ -34,11 +32,11 @@ podman run --name rpki-client \
 
 ## Volumes
 
-  * `/etc/tals` - Directory for Trust Anchor Location (TAL) files that `rpki-client` will load by default. ARIN TAL must be [downloaded separately](https://www.arin.net/resources/manage/rpki/tal/#downloading-the-arin-tal) in RFC 7730 format, because the ARIN Relying Party Agreement (RPA) must be accepted.
+  * `/etc/tals` - Directory for Trust Anchor Location (TAL) files that `rpki-client` will load by default.
   * `/var/lib/rpki-client` - Directory where `rpki-client` will write the output files. By default BIRD and OpenBGPD compatible outputs as well as CSV and JSON formats are generated.
-  * `/var/cache/rpki-client` - Directory where `rpki-client` will store the cached repository data. To speed-up the performance, persistent storage is recommented.
+  * `/var/cache/rpki-client` - Directory where `rpki-client` will store the cached repository data. To speed up the performance, persistent SSD-based storage is recommented.
 
-While none of the volumes is required, meaningful usage requires at least persistent storage for `/var/lib/rpki-client` and the ARIN TAL.
+While none of the volumes are required, meaningful usage requires at least persistent storage for `/var/lib/rpki-client`.
 
 ## Environment Variables
 
