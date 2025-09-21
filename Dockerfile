@@ -31,7 +31,7 @@ LABEL maintainer="Robert Scheck <https://github.com/rpki-client/rpki-client-cont
       org.label-schema.usage="https://man.openbsd.org/rpki-client" \
       org.label-schema.vcs-url="https://github.com/rpki-client"
 
-ARG VERSION=9.5
+ARG VERSION=9.6
 ARG PORTABLE_GIT
 ARG PORTABLE_COMMIT
 ARG OPENBSD_GIT
