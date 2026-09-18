@@ -12,7 +12,6 @@ on:
 
 jobs:
   main:
-    needs: shellcheck
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
